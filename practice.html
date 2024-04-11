@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+          * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          body {
+            background-color: #39277b;
+          }
+
+          h1 {
+            text-align: center;
+            color: white;
+            margin: 100px auto 40px;
+          }
+
+             form {
+                width: 90%;
+                max-width: 600px;
+                margin: auto;
+                display: flex;
+                align-items: center;
+                height: 80px;
+                background: #434989;
+                border-radius: 8px;
+             }
+
+             form input {
+                  flex: 1;
+                  background: transparent;
+                  border: none;
+                  outline: none;
+                  box-shadow: none;
+                  padding: 0 30px;
+                  height: 100%;
+                  font-size: 20px;
+                  color: #fff;
+             }
+
+             form button {
+                padding: 0px 40px;
+                height: 100%;
+                outline: none;
+                border: none;
+                font-size: 20px;
+                background-color: red;
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+                color: #fff;
+                cursor: pointer;
+             }
+
+             ::placeholder {
+                color: #fff;
+                font-size: 18px;
+             }
+
+
+             
+
+                #search-more{
+            
+                 background: #ff3929;
+
+                 padding: 10px 20px;
+                 border: 0;
+                 outline: 0;
+                 color: white;
+                 border-radius: 4px;
+                 margin: 10px auto 100px;
+                 display: none;
+                 cursor: pointer;
+                }
+
+                #search-result {
+                      width: 80%;
+                      margin: 100px auto 50px;
+                      display: grid;
+                      grid-template-columns: 1fr 1fr 1fr;
+                      grid-gap: 40px;
+                }
+
+                #search-result img {
+                      width: 100%;
+                      height: 230px;
+                      object-fit: cover;
+                      border-radius: 5px;
+                }
+
+
+    </style>
+</head>
+<body>
+      
+    <h1>Image Search Engine</h1>
+    <form id="search-form">
+        <input type="text" id="search-box" name="search" placeholder="search anything here...">
+        <button id="btn">Search</button>
+    </form>
+
+
+    <div id="search-result"></div>
+        <button id="search-more">
+            Show More
+               
+          </button>
+   
+
+      <script>
+          
+        const accessKey="VqMNt7VejBOxqiY1F2Jf1ZNmX0wWloDAc-cQ3_HMnmE";
+        const searchForm=document.getElementById("search-form");
+        const searchBox=document.getElementById("search-box");
+        const searchResult=document.getElementById("search-result");
+        const searchMore=document.getElementById("search-more");
+
+        let keyword = " ";
+        let page=1;
+
+         async function searchImages() {
+              keyword=searchBox.value;
+              const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accessKey}&per_page=12`;
+
+              const response=await fetch(url);//response in the browser
+
+              const data=await response.json();
+              const results=data.results;
+
+              results.map((result) => {
+                  const image=document.createElement("img");
+                  image.src=result.urls.small;
+                  const imageLink=document.createElement("a");
+                  imageLink.href=result.links.html;
+                  imageLink.target="_blank";
+
+                  imageLink.appendChild(image);
+                  searchResult.appendChild(imageLink);
+              })
+           
+              searchMore.style.display="block";
+
+
+         }
+
+
+         searchForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            page=1;
+            searchImages();
+         })
+
+
+         searchMore.addEventListener("click" , ()=> {
+             page++;
+             searchImages();
+         })
+      </script>
+</body>
+</html>

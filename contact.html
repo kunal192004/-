@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City NGO Dropdown</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  #ngoContact {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  p {
+    margin-top: 20px;
+    color: #555;
+  }
+  img {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    max-width: 200px;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Find NGOs in Your City</h1>
+
+  <select id="city">
+    <option value="">Select City</option>
+    <!-- Will be populated dynamically -->
+  </select>
+
+  <select id="ngo">
+    <option value="">Select NGO</option>
+    <!-- Will be populated dynamically based on selected city -->
+  </select>
+
+  <p id="ngoContact"></p> <!-- Container for displaying NGO contact information -->
+
+  <p>NGOs (Non-Governmental Organizations) play a vital role in addressing various social issues and providing assistance to those in need. Use the dropdowns above to select your city and find NGOs operating in your area.</p>
+
+  <img src="./img1.png" alt="NGO Image" width="200">
+</div>
+
+<script>
+  // Sample data (you would fetch this from a database or API)
+  const data = {
+    "Nashik": {
+      "NGO A": {
+        "contact": "Contact A: 123456789",
+      },
+      "NGO B": {
+        "contact": "Contact B: 987654321",
+      },
+      "NGO C": {
+        "contact": "Contact C: 567890123",
+      }
+    },
+    "Pune": {
+      "NGO D": {
+        "contact": "Contact D: 111222333",
+      },
+      "NGO E": {
+        "contact": "Contact E: 444555666",
+      },
+      "NGO F": {
+        "contact": "Contact F: 777888999",
+      }
+    },
+    "Nagpur": {
+      "NGO G": {
+        "contact": "Contact G: 999888777",
+      },
+      "NGO H": {
+        "contact": "Contact H: 666555444",
+      },
+      "NGO I": {
+        "contact": "Contact I: 333222111",
+      }
+    },
+    "Delhi": {
+      "NGO J": {
+        "contact": "Contact J: 000111222",
+      },
+      "NGO K": {
+        "contact": "Contact K: 333444555",
+      },
+      "NGO L": {
+        "contact": "Contact L: 666777888",
+      }
+    }
+  };
+
+  const citySelect = document.getElementById('city');
+  const ngoSelect = document.getElementById('ngo');
+  const ngoContact = document.getElementById('ngoContact');
+
+  // Populate city dropdown
+  for (const city in data) {
+    const option = document.createElement('option');
+    option.value = city;
+    option.textContent = city;
+    citySelect.appendChild(option);
+  }
+
+  // Event listener for city selection
+  citySelect.addEventListener('change', function() {
+    const selectedCity = this.value;
+    ngoSelect.innerHTML = '<option value="">Select NGO</option>'; // Reset NGO dropdown
+
+    if (selectedCity) {
+      for (const ngo in data[selectedCity]) {
+        const option = document.createElement('option');
+        option.value = ngo;
+        option.textContent = ngo;
+        ngoSelect.appendChild(option);
+      }
+    }
+  });
+
+  // Event listener for NGO selection
+  ngoSelect.addEventListener('change', function() {
+    const selectedCity = citySelect.value;
+    const selectedNGO = this.value;
+
+    if (selectedCity && selectedNGO) {
+      const contactInfo = data[selectedCity][selectedNGO].contact;
+      ngoContact.textContent = contactInfo;
+    } else {
+      ngoContact.textContent = ""; // Clear contact info if no NGO is selected
+    }
+  });
+</script>
+
+</body>
+</html>
